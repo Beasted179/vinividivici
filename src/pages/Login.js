@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendKeytoBackend, fetchUser } from '../api'; // Import your API functions
-
+import { Button, FormControl, InputLabel, Input } from '@mui/material';
 function Login() {
   const [apiKey, setApiKey] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
@@ -16,7 +16,7 @@ function Login() {
     try {
       const response = await sendKeytoBackend(apiKey);
       const token = response.token;
-
+      
       localStorage.setItem('token', token);
       setIsLoggedIn(true);
 
@@ -43,18 +43,29 @@ function Login() {
   return (
     <div className="container">
       {isLoggedIn ? (
-        <button onClick={handleLogout}>Logout</button>
+        <Button variant="contained" color="primary" onClick={handleLogout}>
+          Logout
+        </Button>
       ) : (
-        <>
+        <FormControl sx={{ padding: '16px' }}>
           <h1>Login</h1>
-          <input
+          <InputLabel htmlFor="apiKey">API Key</InputLabel>
+          <Input
+            id="apiKey"
             type="text"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Enter API Key"
+            sx={{
+              marginTop: '8px',
+              marginBottom: '8px',
+              backgroundColor: 'white', // Set a white background color
+              color: 'black', // Set a black text color
+            }}
           />
-          <button onClick={handleLogin}>Login</button>
-        </>
+          <Button variant="contained" color="primary" onClick={handleLogin}>
+            Login
+          </Button>
+        </FormControl>
       )}
     </div>
   );

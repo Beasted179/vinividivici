@@ -5,10 +5,20 @@
 body {
     margin: 0;
 }
-.container {
+.scrollableContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70vh; /* Set a specific height for the container */
+    overflow: auto; /* Add scrollbars when content overflows */
     margin: 1rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-}
+  }
 .nav {
     background-color: black;
     color: white;
@@ -36,6 +46,12 @@ body {
     align-items: center;
     padding: .25rem;
 }
+
+.crimeexpTable {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto; /* Center the table within the container */
+  }
 .nav a.active {
     color: rgb(0, 200, 210);
 }

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import WebSocketComponent from '../components/WebSocketComponent'; // Import your WebSocket component
 
 const Crimes = () => {
   // Retrieve the username from localStorage
   const username = localStorage.getItem('username');
-console.log(username)
+
   return (
     <div className="container">
       <h1>Crimes</h1>
@@ -12,6 +13,8 @@ console.log(username)
       ) : (
         <p>Welcome to the Crimes page!</p>
       )}
+
+      <WebSocketComponent />
     </div>
   );
 };
