@@ -5,7 +5,7 @@ export async function sendKeytoBackend(apiKey) {
   console.log('Sending API key:', apiKey);
 
   try {
-    const response = await fetch(`${baseUrl}/api/authenticate`, {
+    const response = await fetch(`${baseUrl}/authenticate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export async function sendKeytoBackend(apiKey) {
 
 export async function fetchUser(token) {
   try {
-    const response = await fetch(`${baseUrl}/api/user`, {
+    const response = await fetch(`${baseUrl}/user`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`, // Include the JWT token in the Authorization header
@@ -55,7 +55,7 @@ export async function fetchUser(token) {
 
 export async function fetchTables(token) {
   try {
-    const response = await fetch(`${baseUrl}/api/tables`, {
+    const response = await fetch(`${baseUrl}/tables`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
