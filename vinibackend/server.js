@@ -1,6 +1,5 @@
 const { client } = require('./client.js');
 const { dataController, authController } = require('./controllers/index.js');
-const updateTableData = require('./scripts/update_table_data_script.js'); // Notice the correct import statement
 const { intervalFunction } = require('./intervalLogic/intervalFunction.js');
 const http = require('http');
 const WebSocket = require('ws');
@@ -19,6 +18,7 @@ app.post('/api/authenticate', authController.authenticate);
 app.get('/api/user', authController.authenticateToken, async (req, res) => {
   try {
     const data = await dataController.fetchUser(req.user.apiKey);
+    console.log(data,"from /api/user")
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch data.' });

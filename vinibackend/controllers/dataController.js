@@ -8,7 +8,7 @@ const apiKey = process.env.PGAPIKEY;
 
 
 async function fetchUser(apiKey) {
-  console.log(apiKey)
+  console.log(apiKey);
   try {
     const response = await fetch(`https://api.torn.com/user/?selections=&key=${apiKey}`, {
       headers: {
@@ -21,6 +21,7 @@ async function fetchUser(apiKey) {
     throw new Error('Error fetching data.');
   }
 }
+
 
 async function fetchCrimeIds() {
   try {
