@@ -15,12 +15,26 @@ async function fetchUser(apiKey) {
         Authorization: `Bearer ${apiKey}`,
       },
     });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Unauthorized: Invalid API key');
+      }
+      throw new Error(`API request failed with status: ${response.status}`);
+    }
+
     const data = await response.json();
+
+    if (!data || !data.name) {
+      throw new Error('Empty or unexpected response data');
+    }
+
     return data.name;
   } catch (error) {
-    throw new Error('Error fetching data.');
+    throw new Error(`Error fetching data: ${error.message}`);
   }
 }
+
 
 
 async function fetchCrimeIds() {

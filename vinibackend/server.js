@@ -11,21 +11,24 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Middleware to handle all routes under /api
+app.use('/api', authController.authenticateToken);
+
 // Authentication route
 app.post('/api/authenticate', authController.authenticate);
 
 // Protected route that requires authentication
-app.get('/api/user', authController.authenticateToken, async (req, res) => {
+app.get('/api/user', async (req, res) => {
   try {
     const data = await dataController.fetchUser(req.user.apiKey);
-    console.log(data,"from /api/user")
+    console.log(data, 'from /api/user');
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch data.' });
   }
 });
 
-app.get('/api/tables', authController.authenticateToken, async (req, res) => {
+app.get('/api/tables', async (req, res) => {
   try {
     const tables = await dataController.fetchTableData(req.user.apiKey);
     console.log('Tables sent to user:', tables); // Log the tables data
@@ -35,7 +38,6 @@ app.get('/api/tables', authController.authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch tables.' });
   }
 });
-
 
 const server = http.createServer(app); // Create the HTTP server
 const wss = new WebSocket.Server({ server }); // Create the WebSocket server
@@ -71,4 +73,5 @@ client.connect()
   .catch(error => {
     console.error('Error connecting to the database:', error);
   });
+
 
