@@ -18,10 +18,9 @@ app.use('/api', authController.authenticate);
 app.post('/api/authenticate', authController.authenticate);
 
 // Protected route that requires authentication
-app.get('/api/user', async (req, res) => {
+app.get('/api/user',authController.authenticateToken, async (req, res) => {
   try {
-    const data = await dataController.fetchUser(req.user.apiKey);
-    console.log(data, 'from /api/user');
+    const data = await dataController.fetchUser(req.user.token);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch data.' });
@@ -30,7 +29,7 @@ app.get('/api/user', async (req, res) => {
 
 app.get('/api/tables', async (req, res) => {
   try {
-    const tables = await dataController.fetchTableData(req.user.apiKey);
+    const tables = await dataController.fetchTableData(req.user.token);
     console.log('Tables sent to user:', tables); // Log the tables data
     res.json(tables);
   } catch (error) {
