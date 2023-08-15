@@ -11,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Middleware to handle all routes under /api
 
 
 // Authentication route
@@ -27,7 +28,7 @@ app.get('/api/user', authController.authenticateToken, async (req, res) => {
   }
 });
 
-app.get('/api/tables',authController.authenticateToken, async (req, res) => {
+app.get('/api/tables', authController.authenticateToken, async (req, res) => {
   try {
     const tables = await dataController.fetchTableData(req.user.apiKey);
     console.log('Tables sent to user:', tables); // Log the tables data
