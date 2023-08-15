@@ -14,6 +14,10 @@ app.use(bodyParser.json());
 // Middleware to handle all routes under /api
 app.use('/api', authController.authenticateToken);
 
+app.get('/', function (req, res) {
+  res.render('index', {});
+});
+
 // Authentication route
 app.post('/api/authenticate', authController.authenticate);
 
