@@ -7,7 +7,7 @@ async function authenticate(req, res) {
   try {
     const { apiKey,  } = req.body;
     const isValidApiKey = await validateApiKey(apiKey);
-
+    
     if (!isValidApiKey) {
       return res.status(401).json({ message: 'Authentication denied.' });
     }
@@ -25,7 +25,7 @@ async function authenticate(req, res) {
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
-
+  
   if (token == null) return res.status(401).json({ error: 'Authentication has failed.' });
 
   // Verify JWT token using the same fixed secret key
