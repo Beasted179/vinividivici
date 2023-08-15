@@ -1,13 +1,14 @@
-const dotenv = require("dotenv")
-dotenv.config()
+const { client } = require('./client.js');
+const { dataController, authController } = require('./controllers/index.js');
+const updateTableData = require('./scripts/update_table_data_script.js'); // Notice the correct import statement
+const { intervalFunction } = require('./intervalLogic/intervalFunction.js');
+const http = require('http');
+const WebSocket = require('ws');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authController = require('./controllers/authController');
-const dataController = require('./controllers/dataController');
-const {client} = require("./client.js")
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -18,18 +19,56 @@ app.post('/api/authenticate', authController.authenticate);
 app.get('/api/user', authController.authenticateToken, async (req, res) => {
   try {
     const data = await dataController.fetchUser(req.user.apiKey);
-    console.log(data)
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch data.' });
   }
 });
 
-client.connect()
-
-// Start the server
-const PORT = process.env.PGPORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.get('/api/tables', authController.authenticateToken, async (req, res) => {
+  try {
+    const tables = await dataController.fetchTableData(req.user.apiKey);
+    console.log('Tables sent to user:', tables); // Log the tables data
+    res.json(tables);
+  } catch (error) {
+    console.error('Error fetching tables:', error);
+    res.status(500).json({ error: 'Failed to fetch tables.' });
+  }
 });
+
+
+const server = http.createServer(app); // Create the HTTP server
+const wss = new WebSocket.Server({ server }); // Create the WebSocket server
+
+const interval = 10 * 1000; // 1 minute in milliseconds
+
+// Connect to the database and start the server
+client.connect()
+  .then(() => {
+    const preferredPort = 3001;
+    const fallbackPort = 3002;
+    const PORT = process.env.PORT || preferredPort;
+
+    server.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+      setInterval(() => {
+        intervalFunction(); // Pass the wss instance here
+      }, interval);
+    }).on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`Port ${PORT} is already in use. Trying fallback port ${fallbackPort}`);
+        server.listen(fallbackPort, () => {
+          console.log(`Server is running on fallback port ${fallbackPort}`);
+          setInterval(() => {
+            intervalFunction(); // Pass the wss instance here
+          }, interval);
+        });
+      } else {
+        console.error('An error occurred:', err);
+      }
+    });
+  })
+  .catch(error => {
+    console.error('Error connecting to the database:', error);
+  });
 

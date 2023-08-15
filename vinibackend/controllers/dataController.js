@@ -53,8 +53,40 @@ async function fetchMembers() {
 }
 
 
+
+
+// Modify the fetchTableData function
+const fetchTableData = async () => {
+  try {
+    const query = `
+      SELECT table_name
+      FROM information_schema.tables
+      WHERE table_schema = 'public'`;
+
+    const result = await client.query(query);
+
+    const tableDataPromises = result.rows.map(async row => {
+      const tableName = row.table_name;
+      const tableDataQuery = `SELECT * FROM ${tableName}`;
+      const tableDataResult = await client.query(tableDataQuery);
+      return { tableName: tableName, data: tableDataResult.rows };
+    });
+
+    const tableData = await Promise.all(tableDataPromises);
+    return tableData;
+  } catch (error) {
+    console.error('Error fetching table data:', error);
+    throw error;
+  }
+};
+
+
+
+
+
 module.exports = {
   fetchUser,
   fetchCrimeIds,
-  fetchMembers
+  fetchMembers,
+  fetchTableData
 };

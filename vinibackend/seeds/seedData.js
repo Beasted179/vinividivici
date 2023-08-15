@@ -1,21 +1,19 @@
-const { spliceDataController } = require("../controllers/spliceDataController")
+const { spliceDataController } = require("../controllers/spliceDataController");
+
+async function getSplicedData() {
+  try {
+    // Fetch or generate data using the spliceDataController
+    const seedData = await spliceDataController();
+    return seedData;
+  } catch (error) {
+    console.error("Error fetching spliced data:", error);
+    throw error; // Re-throw the error to be caught by the caller
+  }
+}
+
+module.exports = {
+  getSplicedData,
+};
 
 
-const seedData = [
-    {
-      rank: 'user1',
-      memberId: '1123',
-      name: 'beasted',
-      status: 'active',
-    },
-    {
-      rank: 'user2',
-      memberId: '1234',
-      name: 'metag',
-      status: 'inactive',
-    },
-  ];
-  
-  module.exports = seedData;
-  
   

@@ -5,6 +5,7 @@ async function fetchCrimeIdsTest() {
   try {
     
     const crimeIds = await fetchCrimeIds();
+    console.log(crimeIds)
   } catch (error) {
     console.error("Error:", error);
   }
