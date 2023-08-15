@@ -1,5 +1,5 @@
 // api.js
-const baseUrl = 'http://localhost:3001';
+const baseUrl = 'https://vinifrontend.onrender.com';
 export async function sendKeytoBackend(apiKey) {
 
   console.log('Sending API key:', apiKey);
