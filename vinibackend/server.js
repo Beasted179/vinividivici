@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use('/api', authController.authenticateToken);
 
 app.get('/', function (req, res) {
-  res.render('index', {});
+  res.send('Hello, this is the root path!');
 });
 
 // Authentication route
