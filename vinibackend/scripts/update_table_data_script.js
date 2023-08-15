@@ -24,7 +24,7 @@ const updateTableData = async () => {
       WHERE table_name LIKE 'users_%'
       ORDER BY table_name
     `);
-    console.log('Backup Tables:', backupTables.rows);
+   
 
     if (backupTables.rows.length > maxBackupTables) {
       const tablesToDelete = backupTables.rows.slice(0, backupTables.rows.length - maxBackupTables);

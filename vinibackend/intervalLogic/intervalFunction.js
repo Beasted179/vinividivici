@@ -4,8 +4,7 @@ async function intervalFunction() {
   try {
     console.log('Interval triggered');
     
-    const tableData = await updateTableData();
-    console.log(tableData);
+    const tableData = await updateTableData();    
   } catch (error) {
     console.error('Error running updateTableData:', error);
   }

@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Middleware to handle all routes under /api
-app.use('/api', authController.authenticateToken);
+app.use('/api', authController.authenticate);
 
 // Authentication route
 app.post('/api/authenticate', authController.authenticate);
@@ -42,7 +42,7 @@ app.get('/api/tables', async (req, res) => {
 const server = http.createServer(app); // Create the HTTP server
 const wss = new WebSocket.Server({ server }); // Create the WebSocket server
 
-const interval = 10 * 1000; // 1 minute in milliseconds
+const interval = 1800* 1000; // 1 minute in milliseconds
 
 // Connect to the database and start the server
 client.connect()
