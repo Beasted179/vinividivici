@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "seed": "node seeds/seed.js"
+    "build": "npm install && node seeds/seed.js"
   },
   "keywords": [],
   "author": "",
