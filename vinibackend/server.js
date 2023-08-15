@@ -27,9 +27,9 @@ app.get('/api/user', authController.authenticateToken, async (req, res) => {
   }
 });
 
-app.get('/api/tables', async (req, res) => {
+app.get('/api/tables',authController.authenticateToken, async (req, res) => {
   try {
-    const tables = await dataController.fetchTableData(req.user.token);
+    const tables = await dataController.fetchTableData(req.user.apiKey);
     console.log('Tables sent to user:', tables); // Log the tables data
     res.json(tables);
   } catch (error) {
