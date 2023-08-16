@@ -83,7 +83,9 @@ const fetchTableData = async () => {
       const tableName = row.table_name;
       const tableDataQuery = `SELECT * FROM ${tableName}`;
       const tableDataResult = await client.query(tableDataQuery);
-      return { tableName: tableName, data: tableDataResult.rows };
+
+      const sortedData = tableDataResult.rows.sort((a, b) => a.rank - b.rank); // Sort by rank
+      return { tableName: tableName, data: sortedData };
     });
 
     const tableData = await Promise.all(tableDataPromises);
@@ -93,6 +95,7 @@ const fetchTableData = async () => {
     throw error;
   }
 };
+
 
 
 

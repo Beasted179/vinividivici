@@ -3,17 +3,16 @@ const { validateApiKey } = require('./authUtils');
 require('dotenv').config({ path: '../.env' }); // Load environment variables from .env file
 
 async function authenticate(req, res) {
-  
   try {
-    const { apiKey,  } = req.body;
+    const { apiKey } = req.body;
     const isValidApiKey = await validateApiKey(apiKey);
     
     if (!isValidApiKey) {
       return res.status(401).json({ message: 'Authentication denied.' });
     }
     
-    // Generate JWT token using a fixed secret key
-    const token = jwt.sign({ apiKey }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Generate JWT token using a fixed secret key without expiration
+    const token = jwt.sign({ apiKey }, process.env.JWT_SECRET);
 
     res.json({ token, message: 'Authentication successful.' });
   } catch (error) {
@@ -21,6 +20,7 @@ async function authenticate(req, res) {
     res.status(500).json({ error: 'Authentication failed.' });
   }
 }
+
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
