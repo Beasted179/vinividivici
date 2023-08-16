@@ -8,6 +8,7 @@ const WebSocketComponent = () => {
   const [tableData, setTableData] = useState(null);
   const [socket, setSocket] = useState(null);
   const [searchName, setSearchName] = useState('');
+  const [searchRank, setSearchRank] = useState('')
   useEffect(() => {
     const newSocket = new WebSocketClient('wss://vinividivici.onrender.com');
 
@@ -77,7 +78,12 @@ const WebSocketComponent = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Rank</TableCell>
+                    <TableCell><TextField
+                        label="Rank"
+                        value={searchRank}
+                        onChange={(e) => setSearchRank(e.target.value)}
+                      />
+                    </TableCell>
                     <TableCell>Member ID</TableCell>
                     <TableCell>
                       <TextField
