@@ -79,19 +79,29 @@ const WebSocketComponent = () => {
                   <TableRow>
                     <TableCell>Rank</TableCell>
                     <TableCell>Member ID</TableCell>
-                    <TableCell>Name</TableCell>
+                    <TableCell>
+                      <TextField
+                        label="Name"
+                        value={searchName}
+                        onChange={(e) => setSearchName(e.target.value)}
+                      />
+                    </TableCell>
                     <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {table.data.map((row) => (
-                    <TableRow key={row.id}>
-                      <TableCell>{row.rank}</TableCell>
-                      <TableCell>{row.memberId}</TableCell>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.status}</TableCell>
-                    </TableRow>
-                  ))}
+                  {table.data
+                    .filter((row) =>
+                      row.name.toLowerCase().includes(searchName.toLowerCase())
+                    )
+                    .map((row) => (
+                      <TableRow key={row.id}>
+                        <TableCell>{row.rank}</TableCell>
+                        <TableCell>{row.memberId}</TableCell>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.status}</TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
