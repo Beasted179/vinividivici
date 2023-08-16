@@ -52,6 +52,7 @@ const WebSocketComponent = () => {
     try {
       const token = localStorage.getItem('token');
       const initialData = await fetchTables(token);
+      console.log(initialData)
       setTableData(initialData);
       
     } catch (error) {
