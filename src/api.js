@@ -34,8 +34,8 @@ export async function fetchUser(token) {
     const response = await fetch(`${baseUrl}/api/user`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`, // Include the JWT token in the Authorization header
         'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`
       },
     });
 
@@ -57,8 +57,8 @@ export async function fetchTables(token) {
   try {
     const response = await fetch(`${baseUrl}/api/tables`, {
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`
       }
     });
     

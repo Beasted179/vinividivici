@@ -12,7 +12,6 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Middleware to handle all routes under /api
-app.use('/api', authController.authenticateToken);
 
 app.get('/', function (req, res) {
   res.send('Hello, this is the root path!');
@@ -22,7 +21,7 @@ app.get('/', function (req, res) {
 app.post('/api/authenticate', authController.authenticate);
 
 // Protected route that requires authentication
-app.get('/api/user', async (req, res) => {
+app.get('/api/user', authController.authenticateToken, async (req, res) => {
   try {
     const data = await dataController.fetchUser(req.user.apiKey);
     res.json(data);
@@ -31,8 +30,9 @@ app.get('/api/user', async (req, res) => {
   }
 });
 
-app.get('/api/tables', async (req, res) => {
+app.get('/api/tables',authController.authenticateToken, async (req, res) => {
   try {
+    
     const tables = await dataController.fetchTableData(req.user.apiKey);
     console.log('Tables sent to user:', tables); // Log the tables data
     res.json(tables);
