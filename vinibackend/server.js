@@ -22,10 +22,9 @@ app.get('/', function (req, res) {
 app.post('/api/authenticate', authController.authenticate);
 
 // Protected route that requires authentication
-app.get('/api/user',authController.authenticateToken, async (req, res) => {
+app.get('/api/user', async (req, res) => {
   try {
     const data = await dataController.fetchUser(req.user.apiKey);
-    console.log(data)
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch data.' });
