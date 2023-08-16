@@ -9,7 +9,7 @@ const WebSocketComponent = () => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = new WebSocketClient('ws://localhost:3001');
+    const newSocket = new WebSocketClient('https://vinividivici.onrender.com');
 
     newSocket.onopen = () => {
       console.log('WebSocket connection opened');
