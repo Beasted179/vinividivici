@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { w3cwebsocket as WebSocketClient } from 'websocket';
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { TextField, Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { fetchTables } from '../api';
 
 const WebSocketComponent = () => {
   const [tableData, setTableData] = useState(null);
   const [socket, setSocket] = useState(null);
-
+  const [searchName, setSearchName] = useState('');
   useEffect(() => {
     const newSocket = new WebSocketClient('wss://vinividivici.onrender.com');
 
