@@ -100,7 +100,7 @@ const WebSocketComponent = () => {
                 {table.data
                     .filter((row) =>
                       row.name.toLowerCase().includes(searchName.toLowerCase()) &&
-                      (searchRank === '' || Number(searchRank) === row.rank) // Convert searchRank to a number
+                      (searchRank === '' || parseInt(searchRank, 10) === row.rank) // Convert searchRank to a number
                     )
                     .map((row) => (
                       <TableRow key={row.id}>
