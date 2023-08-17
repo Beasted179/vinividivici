@@ -70,6 +70,28 @@ export async function fetchTables(token) {
     return [];
   }
 }
+export async function fetchComparisonData(token, selectedTables) {
+  try {
+    const response = await fetch(`/api/tables/${selectedTables.join(',')}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch comparison data');
+    }
+
+    const comparisonData = await response.json();
+    return comparisonData;
+  } catch (error) {
+    console.error('Error fetching comparison data:', error);
+    return null;
+  }
+}
+
 
 
 

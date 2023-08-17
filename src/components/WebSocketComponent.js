@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { w3cwebsocket as WebSocketClient } from 'websocket';
-import { TextField, Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import {Checkbox, Button, TextField, Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { fetchTables } from '../api';
+import { fetchTables, fetchComparisonData } from '../api';
+
 
 const WebSocketComponent = () => {
   const [tableData, setTableData] = useState(null);
   const [socket, setSocket] = useState(null);
   const [searchName, setSearchName] = useState('');
   const [searchRank, setSearchRank] = useState('')
+  const [selectedTables, setSelectedTables] = useState([]);
   useEffect(() => {
     const newSocket = new WebSocketClient('wss://vinividivici.onrender.com');
 
@@ -87,12 +89,36 @@ const WebSocketComponent = () => {
     }
     return null;
   };
+  const handleAddRemoveTables = () => {
+    // Assuming you have a function named fetchComparisonData that fetches comparison data
+    fetchComparisonData(token, selectedTables)
+      .then((comparisonData) => {
+        if (comparisonData) {
+          // Handle the comparison data, e.g., update state, display results, etc.
+          console.log('Comparison Data:', comparisonData);
+        } else {
+          console.error('Failed to fetch comparison data.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching comparison data:', error);
+      });
+  };
   
   return (
     <Container maxWidth="md">
+      <Button
+      variant="contained"
+      onClick={handleAddRemoveTables}
+      disabled={selectedTables.length < 2}
+    ></Button>
       {reversedTableData.map((table) => (
         <Accordion key={table.tableName}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Checkbox
+            checked={selectedTables.includes(table.tableName)}
+            onChange={() => handleCheckboxChange(table.tableName)}
+          />
           <Typography>
   {table.tableName} -{' '}
   {parseTableName(table.tableName)?.day}/{parseTableName(table.tableName)?.month}{' '}

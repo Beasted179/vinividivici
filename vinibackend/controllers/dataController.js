@@ -66,10 +66,6 @@ async function fetchMembers() {
   }
 }
 
-
-
-
-// Modify the fetchTableData function
 const fetchTableData = async () => {
   try {
     const query = `
@@ -96,6 +92,42 @@ const fetchTableData = async () => {
   }
 };
 
+const compareTables = async (req, res) => {
+  const tableNames = req.params.tableNames.split(',');
+
+  try {
+    await client.connect();
+
+    const comparisonData = [];
+
+    for (const tableName of tableNames) {
+      const query = `SELECT * FROM ${tableName};`;
+      const result = await client.query(query);
+
+      if (result.rows.length === 0) {
+        throw new Error(`Table '${tableName}' not found`);
+      }
+
+      comparisonData.push({
+        tableName: tableName,
+        data: result.rows,
+      });
+    }
+
+    // Perform comparison logic here and add differences to comparisonData objects
+    // For demonstration purposes, let's add a 'differences' field with a sample message
+    for (const data of comparisonData) {
+      data.differences = `Differences for ${data.tableName}`;
+    }
+
+    res.json(comparisonData);
+  } catch (error) {
+    console.error('Error comparing tables:', error);
+    res.status(500).json({ error: 'An error occurred while comparing tables' });
+  } finally {
+    await client.end();
+  }
+};
 
 
 
@@ -105,5 +137,6 @@ module.exports = {
   fetchUser,
   fetchCrimeIds,
   fetchMembers,
-  fetchTableData
+  fetchTableData,
+  compareTables
 };

@@ -41,6 +41,9 @@ app.get('/api/tables',authController.authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch tables.' });
   }
 });
+app.get('/api/tables/:tableNames', authController.authenticateToken, dataController.compareTables);
+
+
 
 const server = http.createServer(app); // Create the HTTP server
 const wss = new WebSocket.Server({ server }); // Create the WebSocket server
