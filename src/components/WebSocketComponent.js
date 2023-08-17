@@ -89,8 +89,18 @@ const WebSocketComponent = () => {
     }
     return null;
   };
+  const handleCheckboxChange = (tableName) => {
+    setSelectedTables((prevSelectedTables) =>
+      prevSelectedTables.includes(tableName) // Check if the tableName is already in the selectedTables array
+        ? prevSelectedTables.filter((table) => table !== tableName) // If yes, remove it from the array
+        : [...prevSelectedTables, tableName] // If not, add it to the array
+    );
+  };
+  
   const handleAddRemoveTables = () => {
-    // Assuming you have a function named fetchComparisonData that fetches comparison data
+    
+    const token = localStorage.getItem('token');
+    
     fetchComparisonData(token, selectedTables)
       .then((comparisonData) => {
         if (comparisonData) {
