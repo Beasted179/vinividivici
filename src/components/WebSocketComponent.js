@@ -3,7 +3,7 @@ import { w3cwebsocket as WebSocketClient } from 'websocket';
 import {Checkbox, Button, TextField, Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { fetchTables, fetchComparisonData } from '../api';
-const [error, setError] = useState(null);
+
 
 const WebSocketComponent = () => {
   const [tableData, setTableData] = useState(null);
