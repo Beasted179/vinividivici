@@ -67,12 +67,27 @@ const WebSocketComponent = () => {
   // Reverse the tableData array to display the newest at the top
   const reversedTableData = [...tableData].reverse();
 
+  const parseTableName = (tableName) => {
+    const datePart = tableName.split('_')[1];
+    const year = datePart.slice(0, 4);
+    const month = datePart.slice(4, 6);
+    const day = datePart.slice(6, 8);
+    const hour = datePart.slice(8, 10);
+    const minute = datePart.slice(10, 12);
+  
+    return {
+      day,
+      month,
+      hour,
+      minute,
+    };
+  };
   return (
     <Container maxWidth="md">
       {reversedTableData.map((table) => (
         <Accordion key={table.tableName}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>{table.tableName}</Typography>
+            <Typography>{table.tableName} - {parseTableName(table.tableName).day}/{parseTableName(table.tableName).month} {parseTableName(table.tableName).hour}:{parseTableName(table.tableName).minute}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <TableContainer component={Paper}>
