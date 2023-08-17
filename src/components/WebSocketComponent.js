@@ -87,7 +87,12 @@ const WebSocketComponent = () => {
       {reversedTableData.map((table) => (
         <Accordion key={table.tableName}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>{table.tableName} - {parseTableName(table.tableName).day}/{parseTableName(table.tableName).month} {parseTableName(table.tableName).hour}:{parseTableName(table.tableName).minute}</Typography>
+          <Typography>
+  {table.tableName} -{' '}
+  {parseTableName(table.tableName)?.day}/{parseTableName(table.tableName)?.month}{' '}
+  {parseTableName(table.tableName)?.hour}:{parseTableName(table.tableName)?.minute}
+</Typography>
+
           </AccordionSummary>
           <AccordionDetails>
             <TableContainer component={Paper}>
