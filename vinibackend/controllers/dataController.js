@@ -192,9 +192,7 @@ const compareTables = async (req, res) => {
   } catch (error) {
     console.error('Error comparing tables:', error);
     res.status(500).json({ error: 'An error occurred while comparing tables' });
-  } finally {
-    await client.end();
-  }
+  } 
 };
 
 
