@@ -70,7 +70,6 @@ const WebSocketComponent = () => {
   const reversedTableData = [...tableData].reverse();
 
   const parseTableName = (tableName) => {
-    console.log(tableName);
     if (tableName && tableName.length > 6) {
       const datePart = tableName.split('_')[1];
       const year = datePart.slice(0, 4);

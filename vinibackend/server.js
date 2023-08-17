@@ -41,7 +41,7 @@ app.get('/api/tables',authController.authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch tables.' });
   }
 });
-app.get('/api/tables/:tableNames', authController.authenticateToken, dataController.compareTables);
+app.get('/api/tables/compare', authController.authenticateToken, dataController.compareTables);
 
 
 

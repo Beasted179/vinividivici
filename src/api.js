@@ -72,7 +72,7 @@ export async function fetchTables(token) {
 }
 export async function fetchComparisonData(token, selectedTables) {
   try {
-    const response = await fetch(`/api/tables/${selectedTables.join(',')}`, {
+    const response = await fetch(`/api/tables/compare?tableNames=${selectedTables.join(',')}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -91,6 +91,7 @@ export async function fetchComparisonData(token, selectedTables) {
     return null;
   }
 }
+
 
 
 
