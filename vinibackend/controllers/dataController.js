@@ -114,7 +114,7 @@ const compareTables = async (req, res) => {
   const tableNames = req.query.tableNames.split(',');
 
   try {
-    //await client.connect();
+    await client.connect();
     const comparisonData = [];
 
     for (const tableName of tableNames) {
