@@ -41,7 +41,16 @@ app.get('/api/tables',authController.authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch tables.' });
   }
 });
-app.get('/api/tables/compare', authController.authenticateToken, dataController.compareTables);
+app.get('/api/tables/compare', authController.authenticateToken, async (req, res) => {
+  try {
+    const comparisonData = await dataController.compareTables(req);
+    res.json(comparisonData);
+  } catch (error) {
+    console.error('Error comparing tables:', error);
+    res.status(500).json({ error: 'An error occurred while comparing tables' });
+  }
+});
+
 
 
 

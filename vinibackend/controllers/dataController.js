@@ -112,7 +112,7 @@ const parseTableName = (tableName) => {
 };
 const compareTables = async (req, res) => {
   const tableNames = req.query.tableNames.split(',');
-  
+
   try {
     //await client.connect();
     const comparisonData = [];
@@ -189,7 +189,7 @@ const compareTables = async (req, res) => {
       comparisonResult.push(tableComparison);
     }
     console.log(comparisonResult, 'comparing');
-    res.json(comparisonResult);
+    return comparisonResult
   } catch (error) {
     console.error('Error comparing tables:', error);
     res.status(500).json({ error: 'An error occurred while comparing tables' });
