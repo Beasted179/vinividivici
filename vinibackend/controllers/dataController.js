@@ -91,41 +91,115 @@ const fetchTableData = async () => {
     throw error;
   }
 };
+const parseTableName = (tableName) => {
+  if (tableName && tableName.length > 6) {
+    const datePart = tableName.split('_')[1];
+    const year = datePart.slice(0, 4);
+    const month = datePart.slice(4, 6);
+    const day = datePart.slice(6, 8);
+    const hour = datePart.slice(8, 10);
+    const minute = datePart.slice(10, 12);
 
+    return {
+      day,
+      month,
+      year,
+      hour,
+      minute,
+    };
+  }
+  return null;
+};
 const compareTables = async (req, res) => {
   const tableNames = req.query.tableNames.split(',');
-  console.log(tableNames)
+  
   try {
-    await client.connect();
-
+    //await client.connect();
     const comparisonData = [];
 
     for (const tableName of tableNames) {
-      const query = `SELECT * FROM ${tableName};`;
+      const query = `SELECT * FROM ${tableName} ORDER BY rank;`;
       const result = await client.query(query);
 
       if (result.rows.length === 0) {
         throw new Error(`Table '${tableName}' not found`);
       }
 
-      comparisonData.push({
-        tableName: tableName,
-        data: result.rows,
-      });
+      const tableInfo = parseTableName(tableName); // Extract year, month, and day from the table name
+      if (tableInfo) {
+        comparisonData.push({
+          tableName: tableName,
+          data: result.rows,
+          creationTime: `${tableInfo.year}-${tableInfo.month}-${tableInfo.day}`,
+        });
+      } else {
+        // Handle parsing error if needed
+      }
     }
 
-    // Perform comparison logic here and add differences to comparisonData objects
-    // For demonstration purposes, let's add a 'differences' field with a sample message
-    for (const data of comparisonData) {
-      data.differences = `Differences for ${data.tableName}`;
-    }
+    const comparisonResult = [];
 
-    res.json(comparisonData);
+    for (let i = 0; i < comparisonData.length; i++) {
+      const currentTable = comparisonData[i];
+      const previousTable = comparisonData[i - 1];
+
+      if (!previousTable) {
+        continue; // Skip the first table
+      }
+
+      const tableComparison = {
+        tableName: currentTable.tableName,
+        creationTime: currentTable.creationTime,
+        comparison: [],
+      };
+      
+      if (currentTable.data.length === previousTable.data.length) {
+        tableComparison.comparison.push({
+          note: `No rank changes between ${currentTable.tableName} and the previous table.`,
+        });
+      } else {
+        for (let j = 0; j < currentTable.data.length; j++) {
+          const currentRow = currentTable.data[j];
+          const previousRow = previousTable.data.find(row => row.memberId === currentRow.memberId);
+      
+          if (previousRow) {
+            const rankChange = currentRow.rank - previousRow.rank;
+            let note = '';
+      
+            if (rankChange > 0) {
+              note = `${currentRow.name} moved up by ${rankChange} ranks`;
+            } else if (rankChange < 0) {
+              note = `${currentRow.name} moved down by ${Math.abs(rankChange)} ranks`;
+            }
+      
+            if (note) {
+              tableComparison.comparison.push({
+                name: currentRow.name,
+                rankChange: rankChange,
+                note: note,
+              });
+            }
+          }
+        }
+      }
+      
+      comparisonResult.push(tableComparison);
+      
+
+      comparisonResult.push(tableComparison);
+    }
+    console.log(comparisonResult, 'comparing');
+    res.json(comparisonResult);
   } catch (error) {
     console.error('Error comparing tables:', error);
     res.status(500).json({ error: 'An error occurred while comparing tables' });
-  } 
+  } finally {
+    await client.end();
+  }
 };
+
+
+
 
 
 
@@ -136,5 +210,6 @@ module.exports = {
   fetchCrimeIds,
   fetchMembers,
   fetchTableData,
-  compareTables
+  compareTables,
+  parseTableName
 };
