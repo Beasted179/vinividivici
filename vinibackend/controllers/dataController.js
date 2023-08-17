@@ -93,7 +93,7 @@ const fetchTableData = async () => {
 };
 
 const compareTables = async (req, res) => {
-  const tableNames = req.params.tableNames.split(',');
+  const tableNames = req.query.tableNames.split(',');
 
   try {
     await client.connect();
