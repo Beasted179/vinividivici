@@ -94,7 +94,7 @@ const fetchTableData = async () => {
 
 const compareTables = async (req, res) => {
   const tableNames = req.query.tableNames.split(',');
-
+  console.log(tableNames)
   try {
     await client.connect();
 
@@ -124,9 +124,7 @@ const compareTables = async (req, res) => {
   } catch (error) {
     console.error('Error comparing tables:', error);
     res.status(500).json({ error: 'An error occurred while comparing tables' });
-  } finally {
-    await client.end();
-  }
+  } 
 };
 
 
