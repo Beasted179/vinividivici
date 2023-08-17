@@ -68,24 +68,26 @@ const WebSocketComponent = () => {
   const reversedTableData = [...tableData].reverse();
 
   const parseTableName = (tableName) => {
-    console.log(tableName)
-    if (tableName) {
+    console.log(tableName);
+    if (tableName && tableName.length > 6) {
       const datePart = tableName.split('_')[1];
       const year = datePart.slice(0, 4);
       const month = datePart.slice(4, 6);
       const day = datePart.slice(6, 8);
       const hour = datePart.slice(8, 10);
       const minute = datePart.slice(10, 12);
-
+  
       return {
         day,
         month,
+        year,
         hour,
         minute,
       };
     }
     return null;
   };
+  
   return (
     <Container maxWidth="md">
       {reversedTableData.map((table) => (
