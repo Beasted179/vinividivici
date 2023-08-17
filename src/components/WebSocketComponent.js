@@ -3,7 +3,7 @@ import { w3cwebsocket as WebSocketClient } from 'websocket';
 import {Checkbox, Button, TextField, Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { fetchTables, fetchComparisonData } from '../api';
-
+const [error, setError] = useState(null);
 
 const WebSocketComponent = () => {
   const [tableData, setTableData] = useState(null);
@@ -11,6 +11,7 @@ const WebSocketComponent = () => {
   const [searchName, setSearchName] = useState('');
   const [searchRank, setSearchRank] = useState('')
   const [selectedTables, setSelectedTables] = useState([]);
+  const [error, setError] = useState(null);
   useEffect(() => {
     const newSocket = new WebSocketClient('wss://vinividivici.onrender.com');
 
@@ -54,7 +55,6 @@ const WebSocketComponent = () => {
     try {
       const token = localStorage.getItem('token');
       const initialData = await fetchTables(token);
-      console.log(initialData)
       setTableData(initialData);
       
     } catch (error) {
@@ -89,7 +89,8 @@ const WebSocketComponent = () => {
     }
     return null;
   };
-  const handleCheckboxChange = (tableName) => {
+  const handleCheckboxChange = (event, tableName) => {
+    event.stopPropagation();
     setSelectedTables((prevSelectedTables) =>
       prevSelectedTables.includes(tableName) // Check if the tableName is already in the selectedTables array
         ? prevSelectedTables.filter((table) => table !== tableName) // If yes, remove it from the array
@@ -100,10 +101,12 @@ const WebSocketComponent = () => {
   const handleAddRemoveTables = () => {
     
     const token = localStorage.getItem('token');
-    
+    console.log(selectedTables)
     fetchComparisonData(token, selectedTables)
       .then((comparisonData) => {
+  
         if (comparisonData) {
+
           // Handle the comparison data, e.g., update state, display results, etc.
           console.log('Comparison Data:', comparisonData);
         } else {
@@ -111,12 +114,14 @@ const WebSocketComponent = () => {
         }
       })
       .catch((error) => {
+        setError(error)
         console.error('Error fetching comparison data:', error);
       });
   };
   
   return (
     <Container maxWidth="md">
+      {error && <Typography color="error">{error}</Typography>}
       <Button
       variant="contained"
       onClick={handleAddRemoveTables}
@@ -127,7 +132,7 @@ const WebSocketComponent = () => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Checkbox
             checked={selectedTables.includes(table.tableName)}
-            onChange={() => handleCheckboxChange(table.tableName)}
+            onChange={(event) => handleCheckboxChange(event, table.tableName)}
           />
           <Typography>
   {table.tableName} -{' '}
