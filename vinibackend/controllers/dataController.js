@@ -129,7 +129,7 @@ const compareTables = async (req, res) => {
         comparisonData.push({
           tableName: tableName,
           data: result.rows,
-          creationTime: `${tableInfo.year}-${tableInfo.month}-${tableInfo.day}`,
+          creationTime: `${tableInfo.year}-${tableInfo.month}-${tableInfo.day} `,
         });
       } else {
         // Handle parsing error if needed
@@ -137,7 +137,9 @@ const compareTables = async (req, res) => {
     }
 
     const comparisonResult = [];
-
+    comparisonData.sort((a, b) => {
+      return a.creationTime.localeCompare(b.creationTime);
+    });
     for (let i = 1; i < comparisonData.length; i++) {
       const currentTable = comparisonData[i];
       const previousTable = comparisonData[i - 1];
