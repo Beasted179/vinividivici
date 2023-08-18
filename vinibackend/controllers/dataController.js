@@ -197,11 +197,6 @@ const compareTables = async (req, res) => {
 
 
 
-
-
-
-
-
 module.exports = {
   fetchUser,
   fetchCrimeIds,

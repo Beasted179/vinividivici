@@ -125,6 +125,7 @@ const WebSocketComponent = () => {
       variant="contained"
       onClick={handleAddRemoveTables}
       disabled={selectedTables.length < 2}
+      lable="Compare Tables"
     ></Button>
       {reversedTableData.map((table) => (
         <Accordion key={table.tableName}>
