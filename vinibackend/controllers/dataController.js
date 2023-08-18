@@ -138,20 +138,16 @@ const compareTables = async (req, res) => {
 
     const comparisonResult = [];
 
-    for (let i = 0; i < comparisonData.length; i++) {
+    for (let i = 1; i < comparisonData.length; i++) {
       const currentTable = comparisonData[i];
       const previousTable = comparisonData[i - 1];
-
-      if (!previousTable) {
-        continue; // Skip the first table
-      }
 
       const tableComparison = {
         tableName: currentTable.tableName,
         creationTime: currentTable.creationTime,
         comparison: [],
       };
-      
+
       if (currentTable.data.length === previousTable.data.length) {
         tableComparison.comparison.push({
           note: `No rank changes between ${currentTable.tableName} and the previous table.`,
@@ -160,17 +156,17 @@ const compareTables = async (req, res) => {
         for (let j = 0; j < currentTable.data.length; j++) {
           const currentRow = currentTable.data[j];
           const previousRow = previousTable.data.find(row => row.memberId === currentRow.memberId);
-      
+
           if (previousRow) {
             const rankChange = currentRow.rank - previousRow.rank;
             let note = '';
-      
+
             if (rankChange > 0) {
               note = `${currentRow.name} moved up by ${rankChange} ranks`;
             } else if (rankChange < 0) {
               note = `${currentRow.name} moved down by ${Math.abs(rankChange)} ranks`;
             }
-      
+
             if (note) {
               tableComparison.comparison.push({
                 name: currentRow.name,
@@ -181,19 +177,18 @@ const compareTables = async (req, res) => {
           }
         }
       }
-      
-      comparisonResult.push(tableComparison);
-      
 
       comparisonResult.push(tableComparison);
     }
+
     console.log(comparisonResult, 'comparing');
     return comparisonResult
   } catch (error) {
     console.error('Error comparing tables:', error);
     res.status(500).json({ error: 'An error occurred while comparing tables' });
-  } 
+  }
 };
+
 
 
 
