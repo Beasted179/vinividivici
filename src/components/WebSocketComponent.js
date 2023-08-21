@@ -20,7 +20,9 @@ const WebSocketComponent = () => {
       fetchInitialData();
     };
     newSocket.onmessage = (event) => {
+      console.log(event)
       const message = JSON.parse(event.data);
+
       handleSocketMessage(message);
     };
 

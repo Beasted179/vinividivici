@@ -57,7 +57,7 @@ app.get('/api/tables/compare', authController.authenticateToken, async (req, res
 const server = http.createServer(app); // Create the HTTP server
 const wss = new WebSocket.Server({ server }); // Create the WebSocket server
 
-const interval = 24 * 60 * 60 * 1000;  // 1 minute in milliseconds
+const interval = 24 * 60 * 60 * 1000; 
 
 // Connect to the database and start the server
 client.connect()

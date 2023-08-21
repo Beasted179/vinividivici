@@ -138,6 +138,7 @@ const compareTables = async (req, res) => {
 
     const comparisonResult = [];
     comparisonData.sort((a, b) => {
+      
       return a.creationTime.localeCompare(b.creationTime);
     });
     for (let i = 1; i < comparisonData.length; i++) {
